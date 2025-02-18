@@ -51,7 +51,11 @@ jobs:
       run: az acr login -n tasksyncfrontend
 
     - name: Build the Docker image
-      run: docker build . -t tasksyncfrontend.azurecr.io/task-sync:latest
+      run: |
+        docker build . \
+          -t tasksyncfrontend.azurecr.io/task-sync:latest \
+          --build-arg NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+    
 
     - name: Tag image with timestamp
       run: docker tag tasksyncfrontend.azurecr.io/task-sync:latest tasksyncfrontend.azurecr.io/task-sync:build-${{ env.timestamp }}
