@@ -1,42 +1,80 @@
-name: Build and Test
+name: Build and Deploy to Azure Web App
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
   pull_request:
-    branches:
-      - main
+    branches: [ "main" ]
+
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
 
-      - name: Install dependencies
-        run: npm install
+    - name: Install dependencies
+      run: npm install
 
-      - name: Run tests
-        run: npm test
+    - name: Run tests
+      run: npm test
 
-      - name: Build
-        run: npm run build
+    - name: Build project
+      run: npm run build
 
-      - name: Capture timestamp
-        id: timestamp
-        run: echo "::set-output name=timestamp::$(date +'%Y%m%d%H%M%S')"  
-      
-      - name: Login to Azure CLI
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-      
-      - name: Docker login to Azure Container Registry
-        run: az acr login -name tasksyncfrontend
+    - name: Capture timestamp
+      id: timestamp
+      run: echo "timestamp=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
+
+    # Login to Azure using Service Principal
+    - name: Azure CLI Login
+      uses: azure/login@v2
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+    # Login to Azure Container Registry
+    - name: Docker login to Azure Container Registry
+      run: az acr login -n tasksyncfrontend
+
+    # Build the Docker image
+    - name: Build the Docker image
+      run: docker build . -t tasksyncfrontend.azurecr.io/task-sync:latest
+
+    # Tag the image with the latest timestamp
+    - name: Tag image with timestamp
+      run: docker tag tasksyncfrontend.azurecr.io/task-sync:latest tasksyncfrontend.azurecr.io/task-sync:build-${{ env.timestamp }}
+
+    # Push images to Azure Container Registry
+    - name: Push Docker images to ACR
+      run: |
+        docker push tasksyncfrontend.azurecr.io/task-sync:latest
+        docker push tasksyncfrontend.azurecr.io/task-sync:build-${{ env.timestamp }}
+
+    # Deploy updated image to Azure Web App (Linux)
+    - name: Update Azure Web App to use the new image
+      run: |
+        az webapp config container set \
+          --name task-sync \
+          --resource-group task-sync \
+          --docker-custom-image-name tasksyncfrontend.azurecr.io/task-sync:build-${{ env.timestamp }} \
+          --output none
+
+    # Enable Continuous Deployment
+    - name: Enable Continuous Deployment
+      run: az webapp deployment container config --name task-sync --resource-group task-sync --enable-cd true
+
+    # Logout from Azure
+    - name: Azure logout
+      run: az logout
