@@ -26,14 +26,24 @@ jobs:
     - name: Install dependencies
       run: npm install
 
+    - name: Set up environment variables
+      run: |
+        echo "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}" >> $GITHUB_ENV
+        echo "CLERK_SECRET_KEY=${{ secrets.CLERK_SECRET_KEY }}" >> $GITHUB_ENV
+
+    - name: Run tests
+      run: npm test
+
     - name: Build project
       run: npm run build
+      env:
+        NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+        CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
 
     - name: Capture timestamp
       id: timestamp
       run: echo "timestamp=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
 
-    # Login to Azure using Service Principal
     - name: Azure CLI Login
       uses: azure/login@v2
       with:
@@ -42,25 +52,20 @@ jobs:
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
 
-    # Login to Azure Container Registry
     - name: Docker login to Azure Container Registry
       run: az acr login -n tasksyncfrontend
 
-    # Build the Docker image
     - name: Build the Docker image
       run: docker build . -t tasksyncfrontend.azurecr.io/task-sync:latest
 
-    # Tag the image with the latest timestamp
     - name: Tag image with timestamp
       run: docker tag tasksyncfrontend.azurecr.io/task-sync:latest tasksyncfrontend.azurecr.io/task-sync:build-${{ env.timestamp }}
 
-    # Push images to Azure Container Registry
     - name: Push Docker images to ACR
       run: |
         docker push tasksyncfrontend.azurecr.io/task-sync:latest
         docker push tasksyncfrontend.azurecr.io/task-sync:build-${{ env.timestamp }}
 
-    # Deploy updated image to Azure Web App (Linux)
     - name: Update Azure Web App to use the new image
       run: |
         az webapp config container set \
@@ -69,10 +74,8 @@ jobs:
           --docker-custom-image-name tasksyncfrontend.azurecr.io/task-sync:build-${{ env.timestamp }} \
           --output none
 
-    # Enable Continuous Deployment
     - name: Enable Continuous Deployment
       run: az webapp deployment container config --name task-sync --resource-group task-sync --enable-cd true
 
-    # Logout from Azure
     - name: Azure logout
       run: az logout
