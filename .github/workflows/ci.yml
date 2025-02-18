@@ -68,7 +68,7 @@ jobs:
     - name: Update Azure Web App to use the new image
       run: |
         az webapp config container set \
-          --name task-sync \
+          --name tasksync \
           --resource-group task-sync \
           --docker-custom-image-name tasksyncfrontend.azurecr.io/task-sync:build-${{ env.timestamp }} \
           --output none
