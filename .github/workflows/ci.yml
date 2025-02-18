@@ -75,3 +75,8 @@ jobs:
           
     - name: Azure logout
       run: az logout
+    
+    - name: Notify Discord
+      run: |
+       curl -H "Content-Type: application/json" -X POST -d '{"username": "Deployment Bot", "content": "🚀 Deployment to Azure Web App **tasksync** is complete! 🎉"}' ${{ secrets.DISCORD_WEBHOOK_URL }}
+
