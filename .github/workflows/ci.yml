@@ -72,9 +72,6 @@ jobs:
           --resource-group task-sync \
           --docker-custom-image-name tasksyncfrontend.azurecr.io/task-sync:build-${{ env.timestamp }} \
           --output none
-
-    - name: Enable Continuous Deployment
-      run: az webapp deployment container config --name task-sync --resource-group task-sync --enable-cd true
-
+          
     - name: Azure logout
       run: az logout
