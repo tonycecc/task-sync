@@ -1,3 +1,4 @@
+{/*This the the footer code */}
 import Link from 'next/link';
 
 // Export for access to other pages
