@@ -4,7 +4,7 @@ import Link from 'next/link';
 // Export for access to other pages
 export default function Footer() {
   return (
-    <footer className="bg-[#577590] py-4 shadow-md">
+    <footer className="bg-[#577590] py-4 shadow-md mt-auto">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Column 1 Quick about section */}
