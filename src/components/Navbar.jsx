@@ -33,12 +33,8 @@ export default function Navbar() {
           >
             Home
           </Link>
-          <Link
-            href="/about"
-            className="text-white font-medium hover:text-[#F9E9EC] transition-colors"
-          >
-            About
-          </Link>
+          <Link href="/about" className="text-white font-medium hover:text-[#F9E9EC] transition-colors">About</Link>
+          <Link href="/task"  className="text-white font-medium hover:text-[#F9E9EC] transition-colors">{isSignedIn ?"Task":""}</Link>
         </div>
 
         <div className="flex items-center space-x-4">
