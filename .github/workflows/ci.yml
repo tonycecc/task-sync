@@ -37,6 +37,7 @@ jobs:
       env:
         NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
         CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
+        NEXT_PUBLIC_TASKSYNC_API: ${{ secrets.NEXT_PUBLIC_TASKSYNC_API }}
 
     - name: Capture timestamp
       id: timestamp
