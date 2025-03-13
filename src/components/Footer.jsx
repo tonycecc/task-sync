@@ -9,7 +9,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Column 1 Quick about section */}
           <div>
-            <h3 className="text-white text-lg font-bold mb-4">About Us</h3>
+            <h3 className="text-white text-lg font-bold mb-4">Abouts Us</h3>
             <p className="text-white text-sm">
               We provide you and your team with the best organization tools.
             </p>
