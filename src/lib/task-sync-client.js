@@ -1,12 +1,14 @@
-import axios from 'axios'
+import axios from 'axios';
 
-if (!process.env.NEXT_PUBLIC_TASKSYNC_API) {
-    throw new Error('NEXT_PUBLIC_TASKSYNC_API environment variable is not set');
+export function createTaskApiClient() {
+    const baseURL = process.env.NEXT_PUBLIC_TASKSYNC_API;
+    if (!baseURL) {
+        throw new Error('NEXT_PUBLIC_TASKSYNC_API environment variable is not set');
+    }
+    return axios.create({
+        baseURL,
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
 }
-
-export const taskApiClient = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_TASKSYNC_API,
-    headers: {
-        'Content-Type': 'application/json',
-    },
-});

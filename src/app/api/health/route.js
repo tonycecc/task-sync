@@ -1,16 +1,13 @@
 import { NextResponse } from 'next/server';
-import {taskApiClient} from "@/lib/task-sync-client";
+import { createTaskApiClient } from '@/lib/task-sync-client';
 
-export async function GET(request){
-    try{
-        const response = await taskApiClient.get("/health")
-        const { data } = response;
-
-        return NextResponse.json({
-            status: data.data
-        },{status:200})
-    }
-    catch(error){
-        console.log(error)
+export async function GET(request) {
+    try {
+        const taskApiClient = createTaskApiClient();
+        const response = await taskApiClient.get("/health");
+        return NextResponse.json({ status: response.data.data }, { status: 200 });
+    } catch (error) {
+        console.error(error);
+        return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }
