@@ -56,7 +56,7 @@ jobs:
         docker build . \
           -t tasksyncfrontend.azurecr.io/task-sync:latest \
           --build-arg NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
-    
+          --build-arg NEXT_PUBLIC_TASKSYNC_API=${{ secrets.NEXT_PUBLIC_TASKSYNC_API }}
 
     - name: Tag image with timestamp
       run: docker tag tasksyncfrontend.azurecr.io/task-sync:latest tasksyncfrontend.azurecr.io/task-sync:build-${{ env.timestamp }}
