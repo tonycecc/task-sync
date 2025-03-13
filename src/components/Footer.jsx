@@ -11,7 +11,7 @@ export default function Footer() {
           <div>
             <h3 className="text-white text-lg font-bold mb-4">About Us</h3>
             <p className="text-white text-sm">
-              We provide you and your team with the best organization tools.
+              We provide you and your team with the best organization tools .
             </p>
           </div>
 
