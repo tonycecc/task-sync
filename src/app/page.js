@@ -19,7 +19,7 @@ export default function HomePage() {
           <div className="bg-white rounded-lg shadow p-6 text-center">
             <h2 className="text-[#F08A4B] font-bold text-lg mb-2">Easy Task Tracking</h2>
             <p className="text-gray-700">
-              Quickly slowly add tasks, set priorities, and track progress with minimal effort.
+              Quickly add tasks, set priorities, and track progress with minimal effort.
             </p>
           </div>
           <div className="bg-white rounded-lg shadow p-6 text-center">
