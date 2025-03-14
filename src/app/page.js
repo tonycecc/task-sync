@@ -3,7 +3,7 @@ export default function HomePage() {
       <main className="min-h-screen bg-[#F9E9EC] flex flex-col items-center justify-center">
         <section className="text-center max-w-3xl mx-auto px-4 py-12">
           <h1 className="text-4xl md:text-5xl font-bold text-[#577590] mb-6">
-            Welcome to Task Syncs
+            Welcome to Task Syncss
           </h1>
           <p className="text-lg md:text-xl text-[#577590]/90 mb-8">
             Stay organized, boost productivity, and accomplish more with our intuitive task management tool.
@@ -19,7 +19,7 @@ export default function HomePage() {
           <div className="bg-white rounded-lg shadow p-6 text-center">
             <h2 className="text-[#F08A4B] font-bold text-lg mb-2">Easy Task Tracking</h2>
             <p className="text-gray-700">
-              Quickly slowly add tasks, set priorities, and track progress with minimal effort.
+              Quickly add tasks, set priorities, and track progress with minimal effort.
             </p>
           </div>
           <div className="bg-white rounded-lg shadow p-6 text-center">
