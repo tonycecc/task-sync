@@ -24,7 +24,7 @@ const ToggleTask = () => { createTask(!task); }
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">Create Task
             </button>
             {task && <div className="mt-4 p-4 bg-gray-100 rounded-lg">
-                <h2 className="text-2xl font-bold">Create Task</h2>
+                <h2 className="text-2xl font-bold">Create Tasks</h2>
                 <form className="mt-4">
                     <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="taskName">
