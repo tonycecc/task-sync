@@ -34,6 +34,7 @@ export default function Navbar() {
             Home
           </Link>
           <Link href="/about" className="text-white font-medium hover:text-[#F9E9EC] transition-colors">About</Link>
+          <Link href="/calendar" className="text-white font-medium hover:text-[#F9E9EC] transition-colors">Calendar</Link>
           <Link href="/task"  className="text-white font-medium hover:text-[#F9E9EC] transition-colors">{isSignedIn ?"Task":""}</Link>
         </div>
 
