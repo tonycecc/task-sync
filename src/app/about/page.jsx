@@ -2,6 +2,8 @@ import { currentUser } from "@clerk/nextjs/server";
 
 export default async function AboutPage() {
   return (
+    <div classname="text-center font-bold text-2xl">About Us</div>
+    
     <div>
       <p> TaskSync started out as a software project for our Senior Capstone Class (at one point we wanted to call it Agenda Ninja, but that was scrapped for respectibility's sake). <br></br>
         [Editor's Note: I still wanted it though :) ] <br></br>
