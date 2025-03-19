@@ -1,9 +1,6 @@
 import { currentUser } from "@clerk/nextjs/server";
 
 export default async function AboutPage() {
-  const user = await currentUser();
-
-console.log('user is',user);
   return (
     <div>
       <p> TaskSync started out as a software project for our Senior Capstone Class (at one point we wanted to call it Agenda Ninja, but that was scrapped for respectibility's sake). <br></br>
