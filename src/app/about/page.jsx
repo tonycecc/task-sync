@@ -1,22 +1,17 @@
-import { currentUser } from "@clerk/nextjs/server";
-
 export default async function AboutPage() {
   return (
-    <div classname="text-center font-bold text-2xl">About Us</div>
-    
-    <div>
-      <p> TaskSync started out as a software project for our Senior Capstone Class (at one point we wanted to call it Agenda Ninja, but that was scrapped for respectibility's sake). <br></br>
-        [Editor's Note: I still wanted it though :) ] <br></br>
-        Anyway, we hope your team can get some use out of this project. <br></br>
-        <br></br>
-           Sincerely,<br></br>
-        Khoi Le<br></br>
-        Ryeleigh Avila<br></br>
-        Logan Herrera<br></br>
-        Anthony Cecchini<br></br>
-        <br></br>
-        p.s. Thank you to our instructor, Asaad Althoubi, for helping us out along the way.<br></br>
-        </p>
+    <div classname="text-center font-bold text-2xl">About Us
+      <p> TaskSync started out as a software project for our Senior Capstone Class (at one point we wanted to call it Agenda Ninja, but that was scrapped for respectibility's sake).
+        [Editor's Note: I still wanted it though]
+        Anyway, we hope your team can get some use out of this project. 
+        Sincerely,
+        Khoi Le
+        Ryeleigh Avila
+        Logan Herrera
+        Anthony Cecchini
+        
+        p.s. Thank you to our instructor, Asaad Althoubi, for helping us out along the way.
+      </p>
     </div>
   );
 }
