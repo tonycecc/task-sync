@@ -1,30 +1,24 @@
 export default async function AboutPage() {
   return (
-    <div className="text-center font-bold text-2xl">About Us
-      <p>
+    <div className="h-screen bg-[#F9E9EC] flex flex-col font-arial text-[#577590]">
+      <p className="m-4 text-2xl text-center font-bold">Who We Are
       </p>
-      <p> TaskSync started out as a software project for our Senior Capstone Class (at one point we wanted to call it Agenda Ninja, but that was scrapped for respectibility's sake).
-        [Editor's Note: I still wanted it though]
+      <p className="mx-8 my-4 text-left"> TaskSync started out as a software project for our Senior Capstone Class (at one point we wanted to call it Agenda Ninja, but that was scrapped for respectibility's sake).
+        [Editor's Note: I still wanted it though :) ]
       </p>
-      <p>
+      <p className="mx-7 my-4 text-left"> Anyway, we hope you and your team can get some use out of this project. 
       </p>
-      <p> Anyway, we hope your team can get some use out of this project. 
+      <p className="mx-12 my-4 text-left">         Sincerely,
       </p>
-      <p>
+      <p className="mx-10 text-left">Khoi Le
       </p>
-      <p>     Sincerely,
+      <p className="mx-10 text-left">Ryeleigh Avila
       </p>
-      <p>Khoi Le
+      <p className="mx-10 text-left">Logan Herrera
       </p>
-      <p>Ryeleigh Avila
+      <p className="mx-10 text-left">Anthony Cecchini
       </p>
-      <p>Logan Herrera
-      </p>
-      <p>Anthony Cecchini
-      </p>
-      <p>
-      </p>
-      <p>p.s. Thank you to our instructor, Asaad Althoubi, for helping us out along the way.
+      <p className="mx-8 my-4 text-left">p.s. Thank you to our instructor, Asaad Althoubi, for helping us out along the way.
       </p>
     </div>
   );
