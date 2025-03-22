@@ -1,23 +1,46 @@
 "use client"
 import React from "react";
 import {useState} from "react";
-import {NextResponse} from "next/server";
+import { useUser } from '@clerk/nextjs';
 
 
 export default function Page() {
-const [task, createTask] = useState(false);
-const ToggleTask = () => { createTask(!task); }
-    const checkApiHealth = async()=>{
-    try{
-        const response = await fetch('/api/health',{
-            method:'GET',
-        })
-        console.log('Frontend response',response)
+    const [task, createTask] = useState(false);
+    const { user } = useUser();
+
+    const ToggleTask = () => {
+        createTask(!task);
     }
-    catch(error){
-        console.log('Error on the page',error)
+    const checkApiHealth =  () => {
+        try {
+            const response =  fetch('/api/health', {
+                method: 'GET',
+            })
+            console.log('Frontend response', response)
+        } catch (error) {
+            console.log('Error on the page', error)
+        }
     }
+
+    const saveTask =  () => {
+        try {
+            const response =  fetch('api/task', {
+                method: 'POST',
+                body:{
+                    userId: user.id
+                }
+            })
+            console.log("Save task response ",response)
+            if(!response){
+                throw new Error("Failed to save task")
+            }
+        }
+        catch(error){
+            console.log('Error saving task',error)
+        }
+
     }
+
     return (
         <div className="p-4">
             <button onClick={ToggleTask}
@@ -25,7 +48,7 @@ const ToggleTask = () => { createTask(!task); }
             </button>
             {task && <div className="mt-4 p-4 bg-gray-100 rounded-lg">
                 <h2 className="text-2xl font-bold">Create Tasks</h2>
-                <form className="mt-4">
+                <form onSubmit={saveTask} className="mt-4">
                     <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="taskName">
                             Task Name
@@ -48,9 +71,8 @@ const ToggleTask = () => { createTask(!task); }
                         />
                     </div>
                     <div className="flex items-center justify-between">
-                        <button onClick={ToggleTask}
+                        <button onClick={saveTask} type="submit"
                                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                                type="button"
                         >
                             Submit
                         </button>
@@ -59,7 +81,7 @@ const ToggleTask = () => { createTask(!task); }
 
             </div>
             }
-            <button onClick={checkApiHealth}>Testing button</button>
+            <button onClick={saveTask}>Testing button</button>
 
         </div>);
 }
