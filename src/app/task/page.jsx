@@ -39,16 +39,12 @@ export default function Page() {
             });
             console.log("Save task response ", response);
 
-          /*
             if (task.taskName) {
-                setTasks([...tasks, {...task, id: Date.now()}]);
                 createTask({
                     taskName: "",
                     description: ""
                 });
-
-
-            }*/
+            }
             setShowForm(false);
         } catch (error) {
             console.log('Error saving task', error);
