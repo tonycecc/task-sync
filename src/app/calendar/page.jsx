@@ -1,5 +1,5 @@
 export default function Calendar() {
     return (
-        <h1>Welcome to the calendar</h1>
+        <h1>Welcome to the Calendar</h1>
     )
 }
