@@ -1,87 +1,175 @@
 "use client"
 import React from "react";
-import {useState} from "react";
+import { useState } from "react";
 import { useUser } from '@clerk/nextjs';
 
-
 export default function Page() {
-    const [task, createTask] = useState(false);
+    const [task, createTask] = useState({
+        taskName: "",
+        description: ""
+    });
     const { user } = useUser();
+    const [showForm, setShowForm] = useState(false);
+    const [tasks, setTasks] = useState([]);
 
-    const ToggleTask = () => {
-        createTask(!task);
-    }
-    const checkApiHealth =  () => {
+    const toggleForm = () => {
+        setShowForm(!showForm);
+    };
+
+    const checkApiHealth = () => {
         try {
-            const response =  fetch('/api/health', {
+            const response = fetch('/api/health', {
                 method: 'GET',
-            })
-            console.log('Frontend response', response)
+            });
+            console.log('Frontend response', response);
         } catch (error) {
-            console.log('Error on the page', error)
+            console.log('Error on the page', error);
         }
-    }
+    };
 
-    const saveTask =  () => {
+    const saveTask = (e) => {
         try {
-            const response =  fetch('api/task', {
+            e.preventDefault();
+            const response = fetch('api/task', {
                 method: 'POST',
-                body:{
-                    userId: user.id
-                }
-            })
-            console.log("Save task response ",response)
-            if(!response){
-                throw new Error("Failed to save task")
-            }
-        }
-        catch(error){
-            console.log('Error saving task',error)
-        }
+                body: JSON.stringify({
+                    "task": task,
+                    "user_id": user?.id,
+                })
+            });
+            console.log("Save task response ", response);
 
-    }
+          /*
+            if (task.taskName) {
+                setTasks([...tasks, {...task, id: Date.now()}]);
+                createTask({
+                    taskName: "",
+                    description: ""
+                });
+
+
+            }*/
+            setShowForm(false);
+        } catch (error) {
+            console.log('Error saving task', error);
+        }
+    };
+
+    const handleInput = (e) => {
+        const { name, value } = e.target;
+        createTask({ ...task, [name]: value });
+    };
 
     return (
-        <div className="p-4">
-            <button onClick={ToggleTask}
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">Create Task
-            </button>
-            {task && <div className="mt-4 p-4 bg-gray-100 rounded-lg">
-                <h2 className="text-2xl font-bold">Create Tasks</h2>
-                <form onSubmit={saveTask} className="mt-4">
-                    <div className="mb-4">
-                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="taskName">
-                            Task Name
-                        </label>
-                        <input
-                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="taskName"
-                            type="text"
-                            placeholder="Enter Task Name"
-                        />
-                    </div>
-                    <div className="mb-6">
-                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="taskDescription">
-                            Task Description
-                        </label>
-                        <textarea
-                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="taskDescription"
-                            placeholder="Enter Task Description"
-                        />
-                    </div>
-                    <div className="flex items-center justify-between">
-                        <button onClick={saveTask} type="submit"
-                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                        >
-                            Submit
-                        </button>
-                    </div>
-                </form>
+        <div className="min-h-screen bg-[#F9E9EC] py-8 px-4">
+            <div className="max-w-4xl mx-auto">
+                <div className="flex justify-between items-center mb-8">
+                    <h1 className="text-3xl font-bold text-[#577590]">Task Manager</h1>
+                    <button
+                        onClick={toggleForm}
+                        className="bg-[#F2A541] hover:bg-[#F08A4B] text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-300 flex items-center"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
+                        </svg>
+                        Create Task
+                    </button>
+                </div>
 
+                {showForm && (
+                    <div className="mb-8 p-8 bg-white rounded-xl shadow-lg border-l-4 border-[#577590] transform transition-all duration-300">
+                        <h2 className="text-2xl font-bold mb-6 text-[#577590]">Create New Task</h2>
+                        <form onSubmit={saveTask} className="space-y-6">
+                            <div>
+                                <label
+                                    className="block text-sm font-semibold text-gray-700 mb-2"
+                                    htmlFor="taskName"
+                                >
+                                    Task Name
+                                </label>
+                                <input
+                                    className="block w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#F3CA40] focus:border-transparent transition"
+                                    type="text"
+                                    placeholder="Enter Task Name"
+                                    name="taskName"
+                                    value={task.taskName}
+                                    onChange={handleInput}
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label
+                                    className="block text-sm font-semibold text-gray-700 mb-2"
+                                    htmlFor="taskDescription"
+                                >
+                                    Task Description
+                                </label>
+                                <textarea
+                                    className="block w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#F3CA40] focus:border-transparent transition"
+                                    id="taskDescription"
+                                    placeholder="Enter Task Description"
+                                    name="description"
+                                    value={task.description}
+                                    onChange={handleInput}
+                                    rows={4}
+                                />
+                            </div>
+                            <div className="flex space-x-4">
+                                <button
+                                    type="submit"
+                                    className="bg-[#577590] hover:bg-[#4A6275] text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-300 flex-1"
+                                >
+                                    Save Task
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={toggleForm}
+                                    className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-3 px-6 rounded-lg shadow-md transition duration-300"
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                )}
+
+                <div className="mt-8 p-6 bg-white rounded-xl shadow-lg">
+                    <h2 className="text-2xl font-bold mb-6 text-[#577590] flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                        </svg>
+                        All Tasks
+                    </h2>
+
+                    {tasks.length > 0 ? (
+                        <div className="space-y-4">
+                            {tasks.map((t) => (
+                                <div
+                                    key={t.id}
+                                    className="p-4 border-l-4 border-[#F3CA40] bg-gray-50 rounded-lg hover:shadow-md transition duration-300"
+                                >
+                                    <h3 className="font-bold text-lg text-[#F08A4B] mb-2">{t.taskName}</h3>
+                                    <p className="text-gray-600">{t.description || "No description provided."}</p>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="flex flex-col items-center justify-center py-12 text-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-gray-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                            <p className="text-gray-500 text-lg">No tasks to display yet...</p>
+                            <p className="text-gray-400 mt-2">Your tasks will appear here once you create them.</p>
+                            <button
+                                onClick={toggleForm}
+                                className="mt-6 bg-[#F2A541] hover:bg-[#F08A4B] text-white font-medium py-2 px-4 rounded-lg shadow-sm transition duration-300"
+                            >
+                                Create Your First Task
+                            </button>
+                        </div>
+                    )}
+                </div>
             </div>
-            }
-            <button onClick={saveTask}>Testing button</button>
-
-        </div>);
+        </div>
+    );
 }
