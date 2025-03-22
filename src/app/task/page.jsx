@@ -16,16 +16,7 @@ export default function Page() {
         setShowForm(!showForm);
     };
 
-    const checkApiHealth = () => {
-        try {
-            const response = fetch('/api/health', {
-                method: 'GET',
-            });
-            console.log('Frontend response', response);
-        } catch (error) {
-            console.log('Error on the page', error);
-        }
-    };
+
 
     const saveTask = (e) => {
         try {
