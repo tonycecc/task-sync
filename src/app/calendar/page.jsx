@@ -1,44 +1,53 @@
-"use client";
-import { useEffect } from "react";
+'use client';
+
+import { useEffect, useState } from 'react';
+import FullCalendar from '@fullcalendar/react';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import listPlugin from '@fullcalendar/list';
+import multiMonthPlugin from '@fullcalendar/multimonth';
 
 export default function Calendar() {
+  const [isMounted, setIsMounted] = useState(false);
+
   useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js";
-    script.async = true;
-    script.onload = () => {
-      const calendarEl = document.getElementById("calendar");
-      if (window.FullCalendar && calendarEl) {
-        const calendar = new window.FullCalendar.Calendar(calendarEl, {
-          initialView: "dayGridMonth",
-          editable: true,
-          selectable: true,
-          headerToolbar: {
-            left: "prev,next today",
-            center: "title",
-            right: "dayGridMonth,timeGridWeek,timeGridDay,listMonth,multiMonthYear",
-          },
-          events: [
-            { title: "(Just sample)", start: "2025-03-26" },
-            { title: "(just sample)", start: "2025-03-27" },
-            { title: "(Just Sample)", start: "2025-03-30" },
-          ],
-        });
-        calendar.render();
-      }
-    };
-    document.body.appendChild(script);
+    setIsMounted(true);
   }, []);
 
+  if (!isMounted) {
+    return null;
+  }
+
   return (
-    <div className="min-h-screen bg-[#e0f2f1] p-8 font-sans text-black-500">
-      <h1 className="text-4xl font-bold mb-6 text-center text-orange-300 drop-shadow">
-        My TaskSync Calendar
-      </h1>
-      <div
-        id="calendar"
-        className="max-w-6xl mx-auto bg-white p-6 rounded-2xl shadow-xl"
-      ></div>
-    </div>
+      <div className="min-h-screen bg-[#e0f2f1] p-8 font-sans text-black-500">
+        <h1 className="text-4xl font-bold mb-6 text-center text-orange-300 drop-shadow">
+          My TaskSync Calendar
+        </h1>
+        <div className="max-w-6xl mx-auto bg-white p-6 rounded-2xl shadow-xl">
+          <FullCalendar
+              plugins={[
+                dayGridPlugin,
+                timeGridPlugin,
+                interactionPlugin,
+                listPlugin,
+                multiMonthPlugin
+              ]}
+              initialView="dayGridMonth"
+              editable={true}
+              selectable={true}
+              headerToolbar={{
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth,multiMonthYear'
+              }}
+              events={[
+                { title: '(Just sample)', start: '2025-03-26' },
+                { title: '(just sample)', start: '2025-03-27' },
+                { title: '(Just Sample)', start: '2025-03-30' }
+              ]}
+          />
+        </div>
+      </div>
   );
 }
