@@ -4,9 +4,7 @@ import {createTaskApiClient} from '@/lib/task-sync-client';
 export async function POST(request) {
     const requestBody = await request.json()
     const taskApiClient = createTaskApiClient()
-    /*
         console.log('This is request Body',requestBody)
-    */
         try{
             const response = await taskApiClient.post('/insert', {
                 task: requestBody.task.taskName,

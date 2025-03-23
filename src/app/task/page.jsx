@@ -6,7 +6,8 @@ import { useUser } from '@clerk/nextjs';
 export default function Page() {
     const [task, createTask] = useState({
         taskName: "",
-        description: ""
+        description: "",
+        dueDate:""
     });
     const { user } = useUser();
     const [showForm, setShowForm] = useState(false);
@@ -61,7 +62,8 @@ export default function Page() {
             if (task.taskName) {
                 createTask({
                     taskName: "",
-                    description: ""
+                    description: "",
+                    dueDate: "",
                 });
             }
             setShowForm(false);
@@ -75,7 +77,11 @@ export default function Page() {
         const { name, value } = e.target;
         createTask({ ...task, [name]: value });
     };
-
+    const formatDate = (dateString) => {
+        if (!dateString) return "";
+        const date = new Date(dateString);
+        return date.toISOString().split('T')[0]; // Returns YYYY-MM-DD format
+    };
     return (
         <div className="min-h-screen bg-[#F9E9EC] py-8 px-4 relative">
             {notification.show && (
@@ -160,6 +166,23 @@ export default function Page() {
                                     rows={4}
                                 />
                             </div>
+                            <div>
+                                <label
+                                    className="block text-sm font-semibold text-gray-700 mb-2"
+                                    htmlFor="dueDate"
+                                >
+                                    Due Date
+                                </label>
+                                <input
+                                    className="block w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#F3CA40] focus:border-transparent transition"
+                                    type="date"
+                                    placeholder="YYYY-MM-DD"
+                                    name="dueDate"
+                                    value={task.dueDate}
+                                    onChange={handleInput}
+                                    required
+                                />
+                            </div>
                             <div className="flex space-x-4">
                                 <button
                                     type="submit"
@@ -181,8 +204,10 @@ export default function Page() {
 
                 <div className="mt-8 p-6 bg-white rounded-xl shadow-lg">
                     <h2 className="text-2xl font-bold mb-6 text-[#577590] flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
+                             stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                         </svg>
                         All Tasks
                     </h2>
