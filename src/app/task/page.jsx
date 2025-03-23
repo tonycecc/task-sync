@@ -11,17 +11,35 @@ export default function Page() {
     const { user } = useUser();
     const [showForm, setShowForm] = useState(false);
     const [tasks, setTasks] = useState([]);
+    const [notification, setNotification] = useState({
+        show: false,
+        message: '',
+        type: 'success'
+    });
 
     const toggleForm = () => {
         setShowForm(!showForm);
     };
 
+    const showNotification = (message, type = 'success') => {
+        setNotification({
+            show: true,
+            message,
+            type
+        });
 
+        setTimeout(() => {
+            setNotification(prev => ({
+                ...prev,
+                show: false
+            }));
+        }, 3000);
+    };
 
-    const saveTask = (e) => {
+    const saveTask = async (e) => {
         try {
             e.preventDefault();
-            const response = fetch('api/task', {
+            const response = await fetch('api/task', {
                 method: 'POST',
                 body: JSON.stringify({
                     "task": task,
@@ -29,6 +47,16 @@ export default function Page() {
                 })
             });
             console.log("Save task response ", response);
+
+            if (response.ok) {
+                const savedTask = { ...task, id: Date.now() };
+/*
+                setTasks([...tasks, savedTask]);
+*/
+                showNotification('Task saved successfully!');
+            } else {
+                showNotification('Failed to save task. Please try again.', 'error');
+            }
 
             if (task.taskName) {
                 createTask({
@@ -39,6 +67,7 @@ export default function Page() {
             setShowForm(false);
         } catch (error) {
             console.log('Error saving task', error);
+            showNotification('Error saving task. Please try again.', 'error');
         }
     };
 
@@ -48,7 +77,37 @@ export default function Page() {
     };
 
     return (
-        <div className="min-h-screen bg-[#F9E9EC] py-8 px-4">
+        <div className="min-h-screen bg-[#F9E9EC] py-8 px-4 relative">
+            {notification.show && (
+                <div className={`fixed top-4 right-4 left-4 md:left-auto md:right-4 md:w-96 p-4 rounded-lg shadow-lg transition-all duration-300 transform translate-y-0 ${
+                    notification.type === 'success' ? 'bg-green-100 border-l-4 border-green-500 text-green-700' :
+                        'bg-red-100 border-l-4 border-red-500 text-red-700'
+                }`}>
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center">
+                            {notification.type === 'success' ? (
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                </svg>
+                            ) : (
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            )}
+                            <p className="font-medium">{notification.message}</p>
+                        </div>
+                        <button
+                            onClick={() => setNotification(prev => ({ ...prev, show: false }))}
+                            className="text-gray-500 hover:text-gray-700"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            )}
+
             <div className="max-w-4xl mx-auto">
                 <div className="flex justify-between items-center mb-8">
                     <h1 className="text-3xl font-bold text-[#577590]">Task Manager</h1>
