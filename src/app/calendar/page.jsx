@@ -42,7 +42,7 @@ export default function Calendar() {
                 right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth,multiMonthYear'
               }}
               events={[
-                { title: '(Just  sample)', start: '2025-03-26' },
+                { title: '(Just sample)', start: '2025-03-26' },
                 { title: '(just sample)', start: '2025-03-27' },
                 { title: '(Just Sample)', start: '2025-03-30' }
               ]}
