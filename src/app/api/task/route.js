@@ -6,7 +6,7 @@ export async function POST(request) {
     const taskApiClient = createTaskApiClient()
         console.log('This is request Body',requestBody)
         try{
-            const response = await taskApiClient.post('/insert', {
+            const response = await taskApiClient.post('/insertTask', {
                 task: requestBody.task.taskName,
                 description: requestBody.task.description,
                 user_id: requestBody.user_id
