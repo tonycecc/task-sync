@@ -22,5 +22,35 @@ export async function POST(request) {
       catch (error){
             console.log("Internal sever error", error)
       }
-
     }
+export async function GET(request){
+    const taskApiClient = createTaskApiClient()
+    const url = new URL(request.url);
+    const userId = url.searchParams.get('userId');
+    if (!userId) {
+        return NextResponse.json({ error: 'User ID is required' }, { status: 400 });
+    }
+/*
+    console.log('This is the userId from GET route',userId)
+*/
+    const response = await taskApiClient.get(`/getUserTask/${userId}`)
+    
+    console.log("This is what coming back", response.data)
+    if (Array.isArray(response.data)) {
+        const formattedTasks = response.data.map(task => ({
+            id: task.id,
+            taskName: task.task || '',
+            description: task.description || '',
+            dueDate: task.duedate || ''
+        }));
+        return NextResponse.json(formattedTasks);
+    } else {
+        return NextResponse.json([{
+            taskName: response.data.task || '',
+            description: response.data.description || '',
+            dueDate: response.data.duedate || ''
+        }]);
+    }
+
+
+}

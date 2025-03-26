@@ -36,7 +36,22 @@ export default function Page() {
             }));
         }, 3000);
     };
+    const showTask = async ()=>{
+        try{
+            const response = await fetch(`/api/task?userId=${user.id}`,{
+                method: 'GET'
+            })
+            const data = await response.json();
+            setTasks(data);
 
+/*
+                console.log(data)
+*/
+                }
+        catch(error){
+
+        }
+    }
     const saveTask = async (e) => {
         try {
             e.preventDefault();
@@ -214,15 +229,24 @@ export default function Page() {
 
                     {tasks.length > 0 ? (
                         <div className="space-y-4">
-                            {tasks.map((t) => (
+                            {tasks.map((t) => {
+                                const dueDate = t.dueDate ? new Date(t.dueDate) : null;
+                                const isOverdue = dueDate && dueDate < new Date();
+                                return (
                                 <div
                                     key={t.id}
                                     className="p-4 border-l-4 border-[#F3CA40] bg-gray-50 rounded-lg hover:shadow-md transition duration-300"
                                 >
                                     <h3 className="font-bold text-lg text-[#F08A4B] mb-2">{t.taskName}</h3>
+                                    {t.dueDate && (
+                                        <span className={`text-sm font-medium px-2 py-1 rounded ${isOverdue ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800'}`}>
+                                {isOverdue ? 'Overdue: ' : 'Due: '}
+                                            {new Date(t.dueDate).toLocaleDateString()}
+                            </span>
+                                    )}
                                     <p className="text-gray-600">{t.description || "No description provided."}</p>
                                 </div>
-                            ))}
+                            )})}
                         </div>
                     ) : (
                         <div className="flex flex-col items-center justify-center py-12 text-center">
@@ -241,6 +265,7 @@ export default function Page() {
                     )}
                 </div>
             </div>
+            <button onClick={showTask}>Testing button</button>
         </div>
     );
 }
