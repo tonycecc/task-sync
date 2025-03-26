@@ -29,7 +29,7 @@ export default function AboutPage() {
         {
             name: 'Logan Herrera',
             role: 'Developer',
-            github: '#',
+            github: 'https://github.com/lzherrera',
             linkedin: '#'
         }
     ];
@@ -77,10 +77,16 @@ export default function AboutPage() {
 
                     <div className="space-y-6 text-[#577590]/90">
                         <p>
-                            TaskSync originated as a senior capstone project, born from our passion to create a tool that genuinely enhances productivity and team collaboration. Initially known as "Agenda Ninja" during our brainstorming sessions, we ultimately opted for TaskSync to better reflect our mission of synchronizing tasks across teams.
+                            TaskSync was originally called StudyNet, and it was designed to be a tool to help educators track student engagement while also facilitating communication between the student's peers and themselves.
                         </p>
                         <p>
-                            What began as an academic endeavor has evolved into a robust task management solution designed to meet the real-world needs of individuals and teams seeking to optimize their workflow and boost productivity.
+                            As we started planning and designing further, however, we realized that StudyNet’s core functions could help all kinds of organizations outside the realm of education. Whether it is a large-scale company or a small book club, every group needs a way to organize and communicate with each other.
+                        </p>
+                        <p>
+                            So, with this in mind, StudyNet was changed to TaskSync (one alternative name we thought of was AgendaNinja. This was scrapped for respectabilities sake [editor's note: I still want it though!]).
+                        </p>
+                        <p>
+                            As it is today, TaskSync can help people all over the world get connected to achieve greater goals. We are excited to see all the projects that will be completed thanks to TaskSync. 
                         </p>
                     </div>
                 </motion.div>
