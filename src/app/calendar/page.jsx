@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -13,10 +13,14 @@ export default function Calendar() {
     const [isMounted, setIsMounted] = useState(false);
     const [tasks, setTasks] = useState([]);
     const [events, setEvents] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     const { user } = useUser();
+    const tooltipContainerRef = useRef(null);
+
     const fetchTasks = async () => {
         if (!user?.id) return;
 
+        setIsLoading(true);
         try {
             const response = await fetch(`/api/task?userId=${user.id}`, {
                 method: 'GET'
@@ -30,7 +34,7 @@ export default function Calendar() {
             setTasks(data);
 
             const taskEvents = data.map(task => ({
-                id: task.id,
+                id: task.id || `task-${Math.random().toString(36).substr(2, 9)}`,
                 title: task.taskName,
                 start: task.dueDate,
                 allDay: true,
@@ -42,6 +46,8 @@ export default function Calendar() {
             setEvents(taskEvents);
         } catch (error) {
             console.error("Error fetching tasks:", error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -54,6 +60,22 @@ export default function Calendar() {
 
     useEffect(() => {
         setIsMounted(true);
+
+        const existingTooltips = document.querySelectorAll('.event-tooltip');
+        existingTooltips.forEach(tooltip => {
+            if (document.body.contains(tooltip)) {
+                document.body.removeChild(tooltip);
+            }
+        });
+
+        return () => {
+            const tooltips = document.querySelectorAll('.event-tooltip');
+            tooltips.forEach(tooltip => {
+                if (document.body.contains(tooltip)) {
+                    document.body.removeChild(tooltip);
+                }
+            });
+        };
     }, []);
 
     useEffect(() => {
@@ -80,50 +102,48 @@ export default function Calendar() {
             <h1 className="text-4xl font-bold mb-6 text-center text-orange-300 drop-shadow">
                 My TaskSync Calendar
             </h1>
-            <div className="max-w-6xl mx-auto bg-white p-6 rounded-2xl shadow-xl">
-                <FullCalendar
-                    plugins={[
-                        dayGridPlugin,
-                        timeGridPlugin,
-                        interactionPlugin,
-                        listPlugin,
-                        multiMonthPlugin
-                    ]}
-                    initialView="dayGridMonth"
-                    editable={true}
-                    selectable={true}
-                    headerToolbar={{
-                        left: 'prev,next today',
-                        center: 'title',
-                        right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth,multiMonthYear'
-                    }}
-                    events={events}
-                    eventClick={handleEventClick}
-                    eventDidMount={(info) => {
-                        if (info.event.extendedProps.description) {
-                            const tooltip = document.createElement('div');
-                            tooltip.className = 'event-tooltip bg-gray-800 text-white p-2 rounded text-sm';
-                            tooltip.innerHTML = info.event.extendedProps.description;
-                            document.body.appendChild(tooltip);
 
-                            const eventEl = info.el;
-                            eventEl.onmouseover = function() {
-                                const rect = eventEl.getBoundingClientRect();
-                                tooltip.style.position = 'absolute';
-                                tooltip.style.top = `${rect.bottom + window.scrollY + 5}px`;
-                                tooltip.style.left = `${rect.left + window.scrollX}px`;
-                                tooltip.style.display = 'block';
-                                tooltip.style.zIndex = 1000;
-                            };
-                            eventEl.onmouseout = function() {
-                                tooltip.style.display = 'none';
-                            };
-                            info.el.addEventListener('mouseleave', () => {
-                                document.body.removeChild(tooltip);
-                            }, { once: true });
-                        }
-                    }}
-                />
+            <div
+                ref={tooltipContainerRef}
+                className="tooltip-container relative"
+                style={{ position: 'absolute', zIndex: 1000 }}
+            />
+
+            <div className="max-w-6xl mx-auto bg-white p-6 rounded-2xl shadow-xl">
+                {isLoading ? (
+                    <div className="flex justify-center items-center h-96">
+                        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#577590]"></div>
+                    </div>
+                ) : (
+                    <FullCalendar
+                        plugins={[
+                            dayGridPlugin,
+                            timeGridPlugin,
+                            interactionPlugin,
+                            listPlugin,
+                            multiMonthPlugin
+                        ]}
+                        initialView="dayGridMonth"
+                        editable={true}
+                        selectable={true}
+                        headerToolbar={{
+                            left: 'prev,next today',
+                            center: 'title',
+                            right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth,multiMonthYear'
+                        }}
+                        events={events}
+                        eventClick={handleEventClick}
+                        eventDidMount={(info) => {
+                            if (info.event.extendedProps.description) {
+                                const eventEl = info.el;
+                                eventEl.setAttribute('data-tooltip', info.event.extendedProps.description);
+                                eventEl.title = info.event.extendedProps.description;
+                                eventEl.classList.add('tooltip-enabled');
+                            }
+                        }}
+                        height="auto"
+                    />
+                )}
             </div>
 
             <div className="max-w-6xl mx-auto mt-6 bg-white p-4 rounded-xl shadow-lg">
@@ -133,19 +153,48 @@ export default function Calendar() {
                         <span className="text-gray-600">Total Tasks</span>
                     </div>
                     <div className="text-center">
-            <span className="block text-2xl font-bold text-red-500">
-              {tasks.filter(task => isTaskOverdue(task.dueDate)).length}
-            </span>
+                        <span className="block text-2xl font-bold text-red-500">
+                            {tasks.filter(task => isTaskOverdue(task.dueDate)).length}
+                        </span>
                         <span className="text-gray-600">Overdue</span>
                     </div>
                     <div className="text-center">
-            <span className="block text-2xl font-bold text-green-500">
-              {tasks.filter(task => !isTaskOverdue(task.dueDate) && task.dueDate).length}
-            </span>
+                        <span className="block text-2xl font-bold text-green-500">
+                            {tasks.filter(task => !isTaskOverdue(task.dueDate) && task.dueDate).length}
+                        </span>
                         <span className="text-gray-600">Active</span>
                     </div>
                 </div>
             </div>
+
+            {/* Add CSS for tooltip-enabled elements */}
+            <style jsx global>{`
+                .tooltip-enabled {
+                    position: relative;
+                    cursor: pointer;
+                }
+                
+                .tooltip-enabled:hover::after {
+                    content: attr(data-tooltip);
+                    position: absolute;
+                    bottom: 100%;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background-color: #1f2937;
+                    color: white;
+                    padding: 0.5rem;
+                    border-radius: 0.25rem;
+                    font-size: 0.875rem;
+                    white-space: nowrap;
+                    z-index: 1000;
+                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+                }
+                
+                /* Hide any existing event tooltips */
+                .event-tooltip {
+                    display: none !important;
+                }
+            `}</style>
         </div>
     );
 }

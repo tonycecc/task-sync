@@ -10,8 +10,8 @@ export default function RootLayout({ children }) {
         <ClerkProvider>
             <Navbar />
             <main className="flex-grow">{children}</main>
+            <Footer />
         </ClerkProvider>
-        <Footer />
         </body>
         </html>
     );
