@@ -49,7 +49,7 @@ export default function Page() {
 */
                 }
         catch(error){
-
+                console.log("Big error",error)
         }
     }
     const saveTask = async (e) => {

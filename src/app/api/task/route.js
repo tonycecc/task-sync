@@ -36,7 +36,9 @@ export async function GET(request){
 */
     const response = await taskApiClient.get(`/getUserTask/${userId}`)
     
+/*
     console.log("This is what coming back", response.data)
+*/
     if (Array.isArray(response.data)) {
         const formattedTasks = response.data.map(task => ({
             id: task.id,
