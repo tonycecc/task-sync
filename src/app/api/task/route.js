@@ -11,7 +11,8 @@ export async function POST(request) {
             const response = await taskApiClient.post('/insertTask', {
                 task: requestBody.task.taskName,
                 description: requestBody.task.description,
-                user_id: requestBody.user_id
+                user_id: requestBody.user_id,
+                dueDate: requestBody.task.dueDate || null
             })
             if (!response){
                 console.log("The task can't be send to the api")

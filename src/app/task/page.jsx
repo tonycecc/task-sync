@@ -212,8 +212,10 @@ export default function Page() {
                                     name="dueDate"
                                     value={task.dueDate}
                                     onChange={handleInput}
-                                    min={new Date().toISOString().split('T')[0]} 
-                                    required
+/*
+                                    min={new Date().toISOString().split('T')[0]}
+*/
+
                                 />
                             </div>
                             <div className="flex space-x-4">
