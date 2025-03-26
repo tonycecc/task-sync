@@ -66,9 +66,9 @@ export default function Page() {
 
             if (response.ok) {
                 const savedTask = { ...task, id: Date.now() };
-/*
+
                 setTasks([...tasks, savedTask]);
-*/
+
                 showNotification('Task saved successfully!');
             } else {
                 showNotification('Failed to save task. Please try again.', 'error');
@@ -88,12 +88,23 @@ export default function Page() {
         }
     };
     useEffect(() => {
-        const interval = setInterval(async () => {
-          await showTask();
-        }, 1);
+        const loadInitialTasks = async () => {
+            if (user?.id) {
+                await showTask();
+            }
+        };
+        loadInitialTasks();
+    }, [user]);
 
+    useEffect(() => {
+        if (!user?.id) return;
+        const pollTasks = async () => {
+            await showTask();
+        };
+        pollTasks();
+        const interval = setInterval(pollTasks, 10000);
         return () => clearInterval(interval);
-    }, );
+    }, [user]);
     const handleInput = (e) => {
         const { name, value } = e.target;
         createTask({ ...task, [name]: value });
@@ -101,7 +112,7 @@ export default function Page() {
     const formatDate = (dateString) => {
         if (!dateString) return "";
         const date = new Date(dateString);
-        return date.toISOString().split('T')[0]; // Returns YYYY-MM-DD format
+        return date.toISOString().split('T')[0];
     };
     return (
         <div className="min-h-screen bg-[#F9E9EC] py-8 px-4 relative">
