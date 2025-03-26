@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { useUser,SignInButton } from '@clerk/nextjs';
+import { UserProfile ,useUser,SignInButton } from '@clerk/nextjs';
 
 export default function HomePage() {
     const { user, isLoaded } = useUser();
@@ -19,7 +19,6 @@ export default function HomePage() {
         setIsVisible(true);
     }, []);
 
-    // Fetch tasks for authenticated users
     useEffect(() => {
         const fetchTasks = async () => {
             if (user?.id) {
