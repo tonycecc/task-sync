@@ -1,5 +1,5 @@
 "use client"
-import React from "react";
+import React, {useEffect} from "react";
 import { useState } from "react";
 import { useUser } from '@clerk/nextjs';
 
@@ -87,7 +87,13 @@ export default function Page() {
             showNotification('Error saving task. Please try again.', 'error');
         }
     };
+    useEffect(() => {
+        const interval = setInterval(async () => {
+          await showTask();
+        }, 1);
 
+        return () => clearInterval(interval);
+    }, );
     const handleInput = (e) => {
         const { name, value } = e.target;
         createTask({ ...task, [name]: value });
@@ -265,7 +271,9 @@ export default function Page() {
                     )}
                 </div>
             </div>
+{/* This is use for testing, dont remove it
             <button onClick={showTask}>Testing button</button>
+*/}
         </div>
     );
 }
