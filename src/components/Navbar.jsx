@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import {
   SignInButton,
   SignedIn,
+    SignUpn,
   SignedOut,
   UserButton,
   useUser
