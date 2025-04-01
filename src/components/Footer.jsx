@@ -16,7 +16,7 @@ export default function Footer() {
   };
 
   return (
-      <footer className="bg-[#577590] mt-auto">
+      <footer className="bg-[#00246B] mt-auto">
         <div className="h-8 bg-[#F9E9EC] relative overflow-hidden">
           <div className="absolute -bottom-8 left-0 right-0 h-16 bg-[#577590] transform -skew-y-2"></div>
         </div>
