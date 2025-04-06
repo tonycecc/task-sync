@@ -48,7 +48,7 @@ export default function AboutPage() {
     };
 
     return (
-        <div className="min-h-screen bg-[#F9E9EC] py-16 px-4 sm:px-6 lg:px-8">
+        <div className="min-h-screen bg-[#F0F8FF] py-16 px-4 sm:px-6 lg:px-8">
             <div className="max-w-4xl mx-auto">
                 <motion.div
                     className="text-center mb-16"
@@ -56,9 +56,9 @@ export default function AboutPage() {
                     animate="animate"
                     variants={fadeIn}
                 >
-                    <h1 className="text-4xl font-bold text-[#577590] mb-4">About TaskSync</h1>
+                    <h1 className="text-4xl font-bold text-[#000000] mb-4">About TaskSync</h1>
                     <div className="h-1 w-24 bg-[#F2A541] mx-auto rounded-full mb-8"></div>
-                    <p className="text-lg text-[#577590]/80 max-w-2xl mx-auto">
+                    <p className="text-lg text-[#00246B]/80 max-w-2xl mx-auto">
                         Streamlining task management for teams and individuals with intuitive, powerful tools.
                     </p>
                 </motion.div>

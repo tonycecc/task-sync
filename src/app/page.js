@@ -134,7 +134,7 @@ export default function HomePage() {
                             whileHover={cardHover}
                         >
                             <div className="flex justify-between items-center mb-4">
-                                <h3 className="text-gray-500 font-medium">Total Tasks</h3>
+                                <h3 className="text-black-500 font-medium">Total Tasks</h3>
                                 <span className="p-2 bg-blue-100 rounded-full">
                   <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
@@ -142,7 +142,7 @@ export default function HomePage() {
                 </span>
                             </div>
                             <h2 className="text-4xl font-bold text-[#577590]">{stats.total}</h2>
-                            <p className="text-gray-500 mt-2">Tasks in total</p>
+                            <p className="text-black-500 mt-2">Tasks in total</p>
                         </motion.div>
 
                         <motion.div
@@ -159,7 +159,7 @@ export default function HomePage() {
                 </span>
                             </div>
                             <h2 className="text-4xl font-bold text-red-500">{stats.overdue}</h2>
-                            <p className="text-gray-500 mt-2">Tasks overdue</p>
+                            <p className="text-black-500 mt-2">Tasks overdue</p>
                         </motion.div>
 
                         <motion.div
@@ -168,7 +168,7 @@ export default function HomePage() {
                             whileHover={cardHover}
                         >
                             <div className="flex justify-between items-center mb-4">
-                                <h3 className="text-gray-500 font-medium">Upcoming</h3>
+                                <h3 className="text-black-500 font-medium">Upcoming</h3>
                                 <span className="p-2 bg-green-100 rounded-full">
                   <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -176,7 +176,7 @@ export default function HomePage() {
                 </span>
                             </div>
                             <h2 className="text-4xl font-bold text-green-500">{stats.upcoming}</h2>
-                            <p className="text-gray-500 mt-2">Tasks upcoming</p>
+                            <p className="text-black-500 mt-2">Tasks upcoming</p>
                         </motion.div>
 
                         <motion.div
@@ -185,7 +185,7 @@ export default function HomePage() {
                             whileHover={cardHover}
                         >
                             <div className="flex justify-between items-center mb-4">
-                                <h3 className="text-gray-500 font-medium">This Week</h3>
+                                <h3 className="text-black-500 font-medium">This Week</h3>
                                 <span className="p-2 bg-purple-100 rounded-full">
                   <svg className="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
@@ -202,7 +202,7 @@ export default function HomePage() {
                                     return taskDate >= today && taskDate <= nextWeek;
                                 }).length}
                             </h2>
-                            <p className="text-gray-500 mt-2">Due this week</p>
+                            <p className="text-black-500 mt-2">Due this week</p>
                         </motion.div>
                     </motion.div>
 
@@ -211,7 +211,7 @@ export default function HomePage() {
                         className="bg-white rounded-xl shadow-md p-6 mb-10"
                         variants={fadeIn}
                     >
-                        <h2 className="text-2xl font-bold text-[#577590] mb-6">Recently Added Tasks</h2>
+                        <h2 className="text-2xl font-bold text-[#000000] mb-6">Recently Added Tasks</h2>
                         <div className="space-y-4">
                             {tasks.length > 0 ? (
                                 tasks.slice(0, 5).map((task, index) => {
@@ -278,8 +278,8 @@ export default function HomePage() {
                                     </svg>
                                 </div>
                                 <div>
-                                    <h3 className="font-semibold text-lg text-[#577590]">Calendar View</h3>
-                                    <p className="text-gray-500">View tasks in calendar format</p>
+                                    <h3 className="font-semibold text-lg text-[#00246B]">Calendar View</h3>
+                                    <p className="text-black-500">View tasks in calendar format</p>
                                 </div>
                             </div>
                         </motion.a>
@@ -297,8 +297,8 @@ export default function HomePage() {
                                     </svg>
                                 </div>
                                 <div>
-                                    <h3 className="font-semibold text-lg text-[#577590]">Your Profile</h3>
-                                    <p className="text-gray-500">View and update your profile</p>
+                                    <h3 className="font-semibold text-lg text-[#00246B]">Your Profile</h3>
+                                    <p className="text-black-500">View and update your profile</p>
                                 </div>
                             </div>
                         </motion.a>
