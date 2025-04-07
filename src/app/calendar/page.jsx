@@ -98,8 +98,8 @@ export default function Calendar() {
     }
 
     return (
-        <div className="min-h-screen bg-[#F9E9EC] p-8 font-sans text-black-500">
-            <h1 className="text-4xl font-bold mb-6 text-center text-orange-300 drop-shadow">
+        <div className="min-h-screen bg-[#CADCFC] p-8 font-sans text-black-500">
+            <h1 className="text-4xl font-bold mb-6 text-center text-black-800 drop-shadow">
                 My TaskSync Calendar
             </h1>
 

@@ -148,7 +148,7 @@ export default function Page() {
 
             <div className="max-w-4xl mx-auto">
                 <div className="flex justify-between items-center mb-8">
-                    <h1 className="text-3xl font-bold text-[#577590]">Task Manager</h1>
+                    <h1 className="text-3xl font-bold text-[#000000]">Task Manager</h1>
                     <button
                         onClick={toggleForm}
                         className="bg-[#F2A541] hover:bg-[#F08A4B] text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-300 flex items-center"
@@ -238,7 +238,7 @@ export default function Page() {
                 )}
 
                 <div className="mt-8 p-6 bg-white rounded-xl shadow-lg">
-                    <h2 className="text-2xl font-bold mb-6 text-[#577590] flex items-center">
+                    <h2 className="text-2xl font-bold mb-6 text-[#000000] flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
                              stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
