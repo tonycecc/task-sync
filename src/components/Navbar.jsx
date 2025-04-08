@@ -41,7 +41,9 @@ export default function Navbar() {
     { href: "/", label: "Home" },
     { href: "/about", label: "About" },
     { href: "/calendar", label: "Calendar" },
-    ...(isSignedIn ? [{ href: "/task", label: "Tasks" }] : []),
+    ...(isSignedIn ? [
+      { href: "/task", label: "Tasks" },
+      { href: "/groups", label: "Groups" }] : []),
   ];
 
   return (
